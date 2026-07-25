@@ -1,0 +1,7 @@
+### nothing here yet
+
+route:
+  receiver: "null"
+
+receivers:
+  - name: "null"

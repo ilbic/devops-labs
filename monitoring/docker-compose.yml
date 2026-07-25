@@ -44,6 +44,16 @@ services:
   volumes:
    - grafana-data:/var/lib/grafana
 
+ alertmanager:
+  image: prom/alertmanager:latest
+
+  ports:
+  - "9093:9093"
+  volumes:
+  - "./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml"
+  command:
+    - "--config.file=/etc/alertmanager/alertmanager.yml"
+
 volumes:
  prometheus-data:
  grafana-data:
