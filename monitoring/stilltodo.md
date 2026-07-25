@@ -13,20 +13,20 @@
 - ~~Decide on which metrics?~~
 - Build following dashboards:
 
-####Host
+#### Host
 
 CPU utilisation
 Memory utilisation
 Disk utilisation
 Filesystem free space
 
-####Website
+#### Website
 
 probe_success
 probe_duration_seconds
 SSL certificate expiry
 
-####NGINX
+#### NGINX
 
 Active connections
 Reading / Writing / Waiting connections
