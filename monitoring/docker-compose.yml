@@ -24,17 +24,26 @@ services:
  blackbox-exporter:
   image: prom/blackbox-exporter:latest
   ports:
-  - "9115:9115"
+   - "9115:9115"
   volumes: # tell blackbox where to look for it's config file on my machine
-  - "./blackbox/blackbox.yml:/etc/blackbox_exporter/config.yml"
+   - "./blackbox/blackbox.yml:/etc/blackbox_exporter/config.yml"
   command:
-  - "--config.file=/etc/blackbox_exporter/config.yml"
+   - "--config.file=/etc/blackbox_exporter/config.yml"
+
  # internal webserver metrics
  nginx-exporter:
   image: nginx/nginx-prometheus-exporter:latest
   network_mode: host
   command:
-  - "--nginx.scrape-uri=http://127.0.0.1:8080/nginx_status"
+   - "--nginx.scrape-uri=http://127.0.0.1:8080/nginx_status"
+
+ grafana:
+  image: grafana/grafana-enterprise:latest
+  ports:
+   - "3000:3000"
+  volumes:
+   - grafana-data:/var/lib/grafana
 
 volumes:
-  prometheus-data:
+ prometheus-data:
+ grafana-data:
