@@ -1,59 +1,64 @@
 services:
- prometheus: # run the latest prometheus image
-  image: prom/prometheus:latest
-  # map server ports onto container ports
-  ports:
-   - "9090:9090"
-  # map existing lcal config file onto container - will come in handy next
-  volumes:
-   - "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
-   - "prometheus-data:/prometheus"
- # tell prometheus where to expect config from
-  command:
-   - "--config.file=/etc/prometheus/prometheus.yml"
-   - "--storage.tsdb.retention.time=7d" #don't want to max out storage!
+  prometheus: # run the latest prometheus image
+    image: prom/prometheus:latest
+    # map server ports onto container ports
+    ports:
+      - "9090:9090"
+    # map existing local config file onto container
+    volumes:
+      - "./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml"
+      - "prometheus-data:/prometheus"
+    # tell prometheus where to expect config from
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.retention.time=7d" # don't want to max out storage!
+    restart: unless-stopped
 
- # hardware metrics
- node-exporter:
-  image: prom/node-exporter:latest
+  # hardware metrics
+  node-exporter:
+    image: prom/node-exporter:latest
+    ports:
+      - "9100:9100"
+    restart: unless-stopped
 
-  ports:
-   - "9100:9100"
+  # external website metrics
+  blackbox-exporter:
+    image: prom/blackbox-exporter:latest
+    ports:
+      - "9115:9115"
+    volumes: # tell blackbox where to look for its config file
+      - "./blackbox/blackbox.yml:/etc/blackbox_exporter/config.yml"
+    command:
+      - "--config.file=/etc/blackbox_exporter/config.yml"
+    restart: unless-stopped
 
- # external website metrics
- blackbox-exporter:
-  image: prom/blackbox-exporter:latest
-  ports:
-   - "9115:9115"
-  volumes: # tell blackbox where to look for it's config file on my machine
-   - "./blackbox/blackbox.yml:/etc/blackbox_exporter/config.yml"
-  command:
-   - "--config.file=/etc/blackbox_exporter/config.yml"
+  # internal webserver metrics
+  # nginx exporter needs to live on the host network to talk to nginx
+  nginx-exporter:
+    image: nginx/nginx-prometheus-exporter:latest
+    network_mode: host
+    command:
+      - "--nginx.scrape-uri=http://127.0.0.1:8080/nginx_status"
+    restart: unless-stopped
 
- # internal webserver metrics
- nginx-exporter:
-  image: nginx/nginx-prometheus-exporter:latest
-  network_mode: host
-  command:
-   - "--nginx.scrape-uri=http://127.0.0.1:8080/nginx_status"
+  grafana:
+    image: grafana/grafana-enterprise:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
 
- grafana:
-  image: grafana/grafana-enterprise:latest
-  ports:
-   - "3000:3000"
-  volumes:
-   - grafana-data:/var/lib/grafana
-
- alertmanager:
-  image: prom/alertmanager:latest
-
-  ports:
-  - "9093:9093"
-  volumes:
-  - "./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml"
-  command:
-    - "--config.file=/etc/alertmanager/alertmanager.yml"
+  alertmanager:
+    image: prom/alertmanager:latest
+    ports:
+      - "9093:9093"
+    volumes:
+      - "./alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml"
+    command:
+      - "--config.file=/etc/alertmanager/alertmanager.yml"
+    restart: unless-stopped
 
 volumes:
- prometheus-data:
- grafana-data:
+  prometheus-data:
+  grafana-data:

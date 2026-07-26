@@ -15,10 +15,10 @@
 
 #### Host
 
-- CPU utilisation
-- Memory utilisation
-- Disk utilisation
-- Filesystem free space
+- ~~CPU utilisation~~
+- ~~Memory utilisation~~
+- ~~Disk utilisation~~
+- Filesystem free space~~
 
 #### Website
 
