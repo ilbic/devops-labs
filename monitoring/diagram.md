@@ -1,7 +1,7 @@
 
 
 ### ^^^ hit view as "Code" ^^^
-
+```
                      +------------------+
                      |     Grafana      |
                      |   Dashboards     |
@@ -34,3 +34,4 @@
                                       │
                                       ▼
                                Mobile Notification
+```
