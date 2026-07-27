@@ -1,14 +1,1 @@
-global:
-  smtp_smarthost: smtp.fastmail.com:587
-  smtp_from: alerts@judah.sh
-  smtp_auth_username: judah@judah.sh
-  smtp_auth_password: ${SMTP_PASSWORD}
-
-route:
-  receiver: email
-
-receivers:
-  - name: email
-    email_configs:
-      - to: alerts@judah.sh
-        require_tls: true
+# nothing here - I don't like the way I would have to handle secrets with docker, so I'm looking at ntfy.sh
