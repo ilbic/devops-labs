@@ -2,7 +2,7 @@
 
 This project documents the process of designing (on the fly) and deploying a "production" style monitoring stack for my actual website. 
 
-[Diagram]()
+[Diagram](./diagram.md)
 
 #### Key objectives
 
