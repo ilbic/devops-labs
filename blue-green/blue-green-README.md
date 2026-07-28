@@ -5,7 +5,7 @@ I'll be following along with the scope defined [here](https://roadmap.sh/project
 #### CI
 - Containerise the site (this will also come in handy for the IaC challenge)
 - Continue with GitHub actions to build
-- Add markdown, html, dockerfile linting and maybe spellcheck and link checking, image vulnerability scanning, and stop deployment + notify if there's a failure!
+- Add markdown, html, dockerfile linting and maybe spellcheck and link checking, image vulnerability scanning, gitleaks, and stop deployment + notify if there's a failure!
 
 
 #### CD
@@ -15,3 +15,6 @@ I'll be following along with the scope defined [here](https://roadmap.sh/project
 - Add rollback (so will need to retain the container for a short while)
 - Prometheus automatically discovers the new instance + records the deployment time
 
+#### Nice to have 
+- Dependabot as I plan to pin images + dependencies
+- Rollback button in GH
