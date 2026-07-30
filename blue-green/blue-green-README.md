@@ -18,3 +18,4 @@ I'll be following along with the scope defined [here](https://roadmap.sh/project
 #### Nice to have 
 - Dependabot as I plan to pin images + dependencies
 - Rollback button in GH
+- ntfy.sh alerts on job failure + completion
