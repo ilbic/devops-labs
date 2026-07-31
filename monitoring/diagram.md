@@ -25,6 +25,7 @@
 +---------------+  +---------------+  │      +------------------+
 | Node Exporter |  |Blackbox Export|  │      | NGINX Exporter   |
 +---------------+  +---------------+  │      +------------------+
+        ▲                  ▲                             ▲
         │                  │          │                  │
         ▼                  ▼          │                  ▼
    Linux Server      judah.sh HTTPS   │        NGINX stub_status
