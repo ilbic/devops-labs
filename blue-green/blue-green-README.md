@@ -1,21 +1,33 @@
-### Scope
+### Sitrep
 
-I'll be following along with the scope defined [here](https://roadmap.sh/projects/blue-green-deployment), but I really want to take this project to the next level;
+Working:
 
-#### CI
-- Containerise the site (this will also come in handy for the IaC challenge)
-- Continue with GitHub actions to build
-- Add markdown, html, dockerfile, use docker registry, linting and maybe spellcheck and link checking, image vulnerability scanning, gitleaks, and stop deployment + notify if there's a failure at any of these stages
+- Containerised the site with a multi stage Docker build
+- GitHub Actions CI pipeline - yml provided
+- Docker image scanning with Trivy
+- Dockerfile linting with Hadolint
+- Link and Markdown validation (which was too aggressive so I turned it off) 
+- Publishing + retreiving images to // from  GitHub Container Registry
+- Only ship what needs to ship - image is 92mb 
 
+At the moment the commits + work are being tracked in my private website repo as I've been shipping to prod. 
 
-#### CD
-- Blue/green containers
-- Add health checks for green container (need to think what would be suitable here)
-	- If everything is hunky dory, switch traffic automatically
-- Add rollback (so will need to retain the container for a short while)
-- Prometheus automatically discovers the new instance + records the deployment time
+The site is still working tho, some other milestones still need to be hit:
 
-#### Nice to have 
-- Dependabot as I plan to pin images + dependencies
-- Rollback button in GH
-- ntfy.sh alerts on job failure + completion
+1. Write docker-compose.yml, in progress 
+2. Write deploy.sh, also in progess
+	3. Implement deployment slot detection
+	4. Implement health checks
+	5. Implement nginx switching
+6. Automatic cleanup (shutting down old container)
+
+Overkill for this project but "nice to have":
+
+- Docker HEALTHCHECK
+- cAdvisor
+- Blackbox Exporter
+- Grafana deployment dashboard
+- ntfy.sh deployment notifications
+- Automatic rollback
+- Deploy by image digest instead of tag
+

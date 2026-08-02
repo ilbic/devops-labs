@@ -1,0 +1,56 @@
+name: Website CI
+
+on:
+  push:
+    branches:
+      - containerisation
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+  # only introduce linting once the runner has repository context
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: dockerfile
+
+      - run: docker build -t judah.sh .
+      - run: docker image inspect judah.sh
+
+      - uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: judah.sh
+          format: table
+          exit-code: "1"
+          severity: CRITICAL,HIGH
+
+  # good to verify ^^ before dropping the image off at the registry
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - run: docker tag judah.sh ghcr.io/${{ github.repository_owner }}/judah.sh:latest
+
+      - run: docker tag judah.sh ghcr.io/${{ github.repository_owner }}/judah.sh:${{ github.sha }}
+
+      - run: docker push ghcr.io/${{ github.repository_owner }}/judah.sh:latest
+
+      - run: docker push ghcr.io/${{ github.repository_owner }}/judah.sh:${{ github.sha }}
+
+      - uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_IP }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+
+      - run: /usr/local/bin/cd/deploy.sh

@@ -1,0 +1,15 @@
+# this is the dockerfile that github actions actually uses to build the image that containers will use
+
+FROM ruby:4.0.6
+
+WORKDIR /judah.sh
+
+COPY Gemfile Gemfile.lock ./
+
+RUN bundle install
+
+COPY . .
+
+RUN bundle exec jekyll build
+
+CMD ["bundle", "exec", "jekyll", "serve", "--host", "0.0.0.0"]

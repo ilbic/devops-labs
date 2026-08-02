@@ -1,0 +1,20 @@
+# this is the dockerfile that github actions actually uses to build the image that containers will use
+
+FROM ruby:4.0.6 AS builder
+
+WORKDIR /judah.sh
+
+COPY Gemfile Gemfile.lock ./
+
+RUN bundle install
+
+COPY . .
+
+RUN bundle exec jekyll build
+
+# after this, i checked the build image in docker and it was 1.7GB - way too big. How can I trim it down?
+# all I need to do is serve up the _site folder, everything else can go in the bin 
+
+FROM nginx:alpine as server
+
+COPY --from=builder /judah.sh/_site /usr/share/nginx/html 
