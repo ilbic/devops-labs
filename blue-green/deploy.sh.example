@@ -10,7 +10,7 @@ log_file="/var/log/judah-sh-deployment.log"
 
 today=$(date '+%c')
 
-#brings the latest container up from the registry
+#brings the latest container up from the registry - been testing with my latest commit id
 echo "$today" >> "$log_file"
 docker pull "$image" | tee -a "$log_file"
 
