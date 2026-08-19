@@ -8,7 +8,7 @@ Working:
 - Dockerfile linting with Hadolint
 - Link and Markdown validation (which was too aggressive so I turned it off) 
 - Publishing + retreiving images to // from  GitHub Container Registry
-- Only ship what needs to ship - image is 92mb 
+- Only ship what needs to ship - image is 92mb down from over 4gb 
 
 At the moment the commits + work are being tracked in my private website repo as I've been shipping to prod. 
 
