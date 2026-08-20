@@ -18,3 +18,11 @@ A commit based, blue // green style deployment for a personal website.
 	- Old container is brought down and removed
 	- Backup config is removed
 	
+#### What's next?
+
+- Prometheus + subsequent exporters remain unconfigured which will need to be done automatically
+- There are still existing failure modes and ways to harden this:
+	- More advanced stress testing on the container
+	- Simulating a client's view of the site
+
+I'll deal with those later, but for now I'm marking this as technically done.
