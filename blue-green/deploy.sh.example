@@ -10,17 +10,53 @@ log_file="/var/log/judah-sh-deployment.log"
 
 today=$(date '+%c')
 
-#brings the latest container up from the registry - been testing with my latest commit id
+#brings the latest container up from the registry
 echo "$today" >> "$log_file"
 docker pull "$image" | tee -a "$log_file"
 
 current_port=$( cat /etc/nginx/conf.d/judah.sh.conf | grep proxy_pass | awk -F ":" '{print $3}' | awk -F ";" '{print $1}' )
 
 if [ $current_port == 4000 ]; then
-	echo "hi"
+        deployment_port="4001"
 elif [ $current_port == 4001 ]; then
-	echo "hi"
+        deployment_port="4000"
 else
-	echo "port is neither 4000 nor 4001. Aborting." >> "$log_file"
-	exit 1
+        echo "port is neither 4000 nor 4001. Aborting." >> "$log_file"
+        exit 1
+fi
+
+deployment_port="$deployment_port" image_tag="$1" \
+    docker compose -f /usr/local/bin/cd/docker-compose.yml up -d "site-$deployment_port"
+
+# this allows the webserver on the container some breathing room to start
+sleep 15
+
+if curl -sfIv "http://localhost:${deployment_port}" 2>&1 | tee -a "$log_file"; then
+    echo "HTTP health check passed" | tee -a "$log_file"
+else
+    echo "HTTP health check failed" | tee -a "$log_file"
+    exit 1
+fi
+
+cp /etc/nginx/conf.d/judah.sh.conf "/etc/nginx/conf.d/judah.sh.conf.${today}.bak"
+
+existing_config="/etc/nginx/conf.d/judah.sh.conf.${today}.bak"
+
+sed -i "s|proxy_pass http://127.0.0.1:$current_port;|proxy_pass http://127.0.0.1:$deployment_port;|" /etc/nginx/conf.d/judah.sh.conf
+
+new_config="/etc/nginx/conf.d/judah.sh.conf"
+
+if nginx -t; then
+        nginx -s reload
+        rm "$existing_config"
+        # could also do a blackbox based check here
+        docker container stop "judah-sh-${current_port}"
+        docker container rm "judah-sh-${current_port}"
+else
+        echo "NGINX configuration was found to be invalid. Aborting, and reverting config." | tee -a "$log_file"
+        cp "$existing_config" "$new_config"
+        echo "Stopping new container." | tee -a "$log_file"
+        docker container stop "judah-sh-${deployment_port}"
+        docker container rm "judah-sh-${deployment_port}"
+    exit 1
 fi
