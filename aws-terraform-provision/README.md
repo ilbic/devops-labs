@@ -19,7 +19,7 @@ Once the infrastructure is ready, I'll use Ansible to:
 - Grab a container from the github container registry and deploy it.
 - Configure Nginx.
 - Configure firewall rules, SSH hardening, fail2ban, remove ubuntu/default user once 'judah' has been added with my existing ssh key. 
-- Configure unattended-upgrades
+- Configure unattended-upgrades, monit for Nginx
 - Configure Tailscale and only allow SSH traffic over my tailnet.
 
 #### Validation
@@ -37,4 +37,4 @@ Once deployed, I'll verify:
 
 #### Nice-to-haves
 
-- Automatically configure my [existing CI pipeline](https://github.com/ilbic/devops-labs/tree/main/blue-green) to be in place on the new infrastructure, rather than manually pulling a container. 
+- Automatically configure my [existing CI pipeline](https://github.com/ilbic/devops-labs/tree/main/blue-green) to be in place on the new infrastructure, rather than pulling a container. 
