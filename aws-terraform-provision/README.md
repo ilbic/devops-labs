@@ -8,7 +8,7 @@ With my existing infrastructure hosted on DigitalOcean, I've instead opted to fo
 I'll use Terraform for the following, within AWS + Cloudflare:
 
 - Configuring the VPC.
-- Provisioning a small EC2 instance.
+- Provisioning a small EC2 instance (t3.nano + 8gb gp3)
 - Setting up a security group - default deny SSH, which will instead be handled by Tailscale.
 - Configuring a subdomain of judah.sh through Cloudflare with proxying on.
 
