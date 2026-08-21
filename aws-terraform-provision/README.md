@@ -1,4 +1,4 @@
-#### Goals
+### Goals
 
 The [roadmap.sh challenge](https://roadmap.sh/projects/iac-digitalocean) requires the creation of a droplet on DigitalOcean via Terraform.
 
@@ -8,7 +8,7 @@ With my existing infrastructure hosted on DigitalOcean, I've instead opted to fo
 I'll use Terraform for the following, within AWS + Cloudflare:
 
 - Configuring the VPC.
-- Provisioninig a small EC2 instance.
+- Provisioning a small EC2 instance.
 - Setting up a security group - default deny SSH, which will instead be handled by Tailscale.
 - Configuring a subdomain of judah.sh through Cloudflare with proxying on.
 
@@ -34,3 +34,7 @@ Once deployed, I'll verify:
 - Firewall rules behave as expected.
 - Security updates are configured.
 - The server can be destroyed and completely recreated from code.
+
+#### Nice-to-haves
+
+- Automatically configure my [existing CI pipeline](https://github.com/ilbic/devops-labs/tree/main/blue-green) to be in place on the new infrastructure, rather than manually pulling a container. 
