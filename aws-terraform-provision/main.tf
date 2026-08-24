@@ -13,11 +13,24 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-resource "aws_instance" "app_server" {
+resource "aws_instance" "test_judah_sh" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.nano"
 
   tags = {
-    Name = "test"
+    Name = "test.judah.sh"
   }
+}
+
+resource "aws_eip" "test_judah_sh" {
+  domain = "vpc"
+
+  tags = {
+    Name = "test.judah.sh"
+  }
+}
+
+resource "aws_eip_association" "test_judah_sh" {
+  instance_id   = aws_instance.test_judah_sh.id
+  allocation_id = aws_eip.test_judah_sh.id
 }
