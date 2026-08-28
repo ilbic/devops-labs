@@ -17,6 +17,11 @@ resource "aws_instance" "test_judah_sh" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.nano"
 
+  root_block_device {
+    volume_size = 8
+    volume_type = "gp3"
+  }
+  
   tags = {
     Name = "test.judah.sh"
   }
