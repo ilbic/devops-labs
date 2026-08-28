@@ -1,3 +1,5 @@
+# AWS config
+
 provider "aws" {
   region = "eu-west-2"
 }
@@ -27,6 +29,7 @@ resource "aws_instance" "test_judah_sh" {
   }
 }
 
+# generate an elastic IP and assign it to the container
 resource "aws_eip" "test_judah_sh" {
   domain = "vpc"
 
