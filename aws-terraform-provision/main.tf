@@ -1,5 +1,5 @@
 # AWS config
-
+# Secrets are handled in my environment so nothing is exposed to production.
 provider "aws" {
   region = "eu-west-2"
 }
@@ -23,13 +23,13 @@ resource "aws_instance" "test_judah_sh" {
     volume_size = 8
     volume_type = "gp3"
   }
-  
+
   tags = {
     Name = "test.judah.sh"
   }
 }
 
-# generate an elastic IP and assign it to the container
+# generate an elastic IP and assign it to the ec2 instance
 resource "aws_eip" "test_judah_sh" {
   domain = "vpc"
 
@@ -41,4 +41,29 @@ resource "aws_eip" "test_judah_sh" {
 resource "aws_eip_association" "test_judah_sh" {
   instance_id   = aws_instance.test_judah_sh.id
   allocation_id = aws_eip.test_judah_sh.id
+}
+
+# Cloudflare config
+
+# didn't want to hardcode/store zone id anywhere - instead, Terraform can discover info about my cloudflare itself
+
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
+}
+
+data "cloudflare_zone" "judah_sh" {
+
+  filter = {
+    name = "judah.sh"
+  }
+}
+
+resource "cloudflare_dns_record" "test_judah_sh" {
+  zone_id = data.cloudflare_zone.judah_sh.id
+  name    = "test.judah.sh"
+  ttl     = 1
+  type    = "A"
+  comment = "hello from terraform"
+  content = aws_eip.test_judah_sh.public_ip
+  proxied = true
 }
