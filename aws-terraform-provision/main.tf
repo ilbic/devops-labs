@@ -67,3 +67,9 @@ resource "cloudflare_dns_record" "test_judah_sh" {
   content = aws_eip.test_judah_sh.public_ip
   proxied = true
 }
+
+# outputs to be returned to ansible + general context
+
+output "test_judah_sh_public_ip" {
+  value = aws_eip.test_judah_sh.public_ip
+}
