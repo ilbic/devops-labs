@@ -15,14 +15,30 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+# always need this step to allow ssh
+data "aws_security_group" "existing" {
+  id = "sg-02d526387f68a4865"
+}
+
+# initial key so ansible can remote on and do it's thing
+resource "aws_key_pair" "judah" {
+  key_name   = "judah"
+  public_key = file("~/.ssh/id_rsa.pub")
+}
+
 resource "aws_instance" "test_judah_sh" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t3.nano"
+  key_name      = aws_key_pair.judah.key_name
 
   root_block_device {
     volume_size = 8
     volume_type = "gp3"
   }
+
+  vpc_security_group_ids = [
+    data.aws_security_group.existing.id
+  ]
 
   tags = {
     Name = "test.judah.sh"
