@@ -28,7 +28,7 @@ resource "aws_key_pair" "judah" {
 
 resource "aws_instance" "test_judah_sh" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = "t3.nano"
+  instance_type = "t3.small"
   key_name      = aws_key_pair.judah.key_name
 
   root_block_device {
