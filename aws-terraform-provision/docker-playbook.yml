@@ -56,8 +56,8 @@
         state: started
         enabled: yes
 
-    - name: Add ubuntu user to docker group
+    - name: Add judah user to docker group
       ansible.builtin.user:
-        name: ubuntu
+        name: judah
         groups: docker
         append: yes
