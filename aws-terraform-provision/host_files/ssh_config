@@ -1,0 +1,14 @@
+# Only permit public-key authentication
+PubkeyAuthentication yes
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+
+# Explicitly specify Judah's authorized public keys
+AuthorizedKeysFile /home/judah/.ssh/authorized_keys
+
+# Disable direct root login
+PermitRootLogin no
+
+# Disable X11 forwarding
+X11Forwarding no
+
