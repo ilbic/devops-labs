@@ -1,0 +1,14 @@
+---
+- name: Start application container
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Start application container
+      community.docker.docker_container:
+        name: judah-sh
+        image: ghcr.io/ilbic/judah.sh:latest
+        state: started
+        restart_policy: unless-stopped
+        ports:
+          - "5000:80"
