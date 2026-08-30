@@ -1,0 +1,20 @@
+---
+- name: configure user account + ssh keys
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Create me
+      ansible.builtin.user:
+        name: judah
+        state: present
+        shell: /bin/zsh
+        create_home: true
+        groups: sudo, docker
+        append: true
+
+    - name: add my ssh key
+      ansible.posix.authorized_key:
+        user: judah
+        state: present
+        key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
