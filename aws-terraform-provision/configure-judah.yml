@@ -10,9 +10,15 @@
         state: present
         shell: /bin/bash
         create_home: true
-        groups: sudo, docker
+        groups: sudo
         append: true
-
+    - name: allow passwordless sudo
+      ansible.builtin.copy:
+        content: "judah ALL=(ALL) NOPASSWD:ALL\n"
+        dest: /etc/sudoers.d/judah
+        owner: root
+        group: root
+        mode: "0440"
     - name: add my ssh key
       ansible.posix.authorized_key:
         user: judah
