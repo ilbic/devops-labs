@@ -13,15 +13,15 @@
     - name: Copy Nginx configuration
       ansible.builtin.copy:
         src: host_files/nginx.conf
-        dest: /etc/nginx/sites-available/judah.sh
+        dest: /etc/nginx/sites-available/test.judah.sh
         owner: root
         group: root
         mode: "0644"
 
     - name: Enable Nginx site
       ansible.builtin.file:
-        src: /etc/nginx/sites-available/judah.sh
-        dest: /etc/nginx/sites-enabled/judah.sh
+        src: /etc/nginx/sites-available/test.judah.sh
+        dest: /etc/nginx/sites-enabled/test.judah.sh
         state: link
 
     - name: Validate Nginx configuration
