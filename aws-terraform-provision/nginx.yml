@@ -1,0 +1,36 @@
+---
+- name: Configure web server
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install Nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+        update_cache: true
+
+    - name: Copy Nginx configuration
+      ansible.builtin.copy:
+        src: host_files/nginx.conf
+        dest: /etc/nginx/sites-available/judah.sh
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Enable Nginx site
+      ansible.builtin.file:
+        src: /etc/nginx/sites-available/judah.sh
+        dest: /etc/nginx/sites-enabled/judah.sh
+        state: link
+
+    - name: Validate Nginx configuration
+      ansible.builtin.command:
+        cmd: nginx -t
+      changed_when: false
+
+    - name: Ensure Nginx is running
+      ansible.builtin.service:
+        name: nginx
+        state: started
+        enabled: true
