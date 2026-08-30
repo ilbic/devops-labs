@@ -1,0 +1,17 @@
+---
+- name: set up ssh properly
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install custom ssh config file
+      ansible.builtin.copy:
+        src: host_files/ssh_config
+        dest: /etc/ssh/sshd_config.d/custom_ssh_config.conf
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Validate ssh config
+      ansible.builtin.command:
+        cmd: sshd -t
