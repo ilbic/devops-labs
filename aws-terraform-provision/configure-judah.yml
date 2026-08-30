@@ -8,7 +8,7 @@
       ansible.builtin.user:
         name: judah
         state: present
-        shell: /bin/zsh
+        shell: /bin/bash
         create_home: true
         groups: sudo, docker
         append: true
