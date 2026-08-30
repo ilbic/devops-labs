@@ -3,8 +3,17 @@
   hosts: all
   become: true
 
+  vars_files:
+    - vault.yml
+
   tasks:
-    - name: Start application container
+    - name: authenticate to registry
+      community.docker.docker_login:
+        registry_url: ghcr.io
+        username: "{{ ghcr_username }}"
+        password: "{{ ghcr_token }}"
+
+    - name: start container
       community.docker.docker_container:
         name: judah-sh
         image: ghcr.io/ilbic/judah.sh:latest
