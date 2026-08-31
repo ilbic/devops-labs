@@ -24,6 +24,8 @@ ansible-playbook -i inventory.yml -u ubuntu configure-judah.yml
 
 ansible-playbook -i inventory.yml -u judah configure-ssh.yml
 
+ansible-playbook -i inventory.yml -u judah remove-ubuntu.yml
+
 ansible-playbook -i inventory.yml -u judah install-docker.yml
 
 ansible-playbook -i inventory.yml -u judah start-container.yml --ask-vault-pass
