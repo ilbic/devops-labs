@@ -1,0 +1,12 @@
+---
+- name: remove ubuntu
+  hosts: all
+  become: true
+
+  tasks:
+    - name: remove ubuntu
+      ansible.builtin.user:
+        name: ubuntu
+        state: absent
+        remove: true
+        force: true
