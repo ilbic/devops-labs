@@ -81,7 +81,7 @@ resource "cloudflare_dns_record" "test_judah_sh" {
   type    = "A"
   comment = "hello from terraform"
   content = aws_eip.test_judah_sh.public_ip
-  proxied = true
+  proxied = false
 }
 
 # outputs to be returned to ansible + general context

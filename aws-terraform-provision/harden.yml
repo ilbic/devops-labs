@@ -1,0 +1,28 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - name: Install fail2ban
+      apt:
+        name: fail2ban
+        state: present
+        update_cache: yes
+
+    - name: Deploy jail.local configuration
+      copy:
+        dest: /etc/fail2ban/jail.local
+        content: |
+          [DEFAULT]
+          bantime = 600
+          findtime = 600
+          maxretry = 5
+
+          [sshd]
+          enabled = true
+      notify: Restart fail2ban
+
+  handlers:
+    - name: Restart fail2ban
+      service:
+        name: fail2ban
+        state: restarted
